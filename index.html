@@ -8,12 +8,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Poppins',sans-serif;background:#0f0f1a;color:#fff;min-height:100vh}
-.container{max-width:800px;margin:0 auto;padding:40px 20px}
+.container{max-width:900px;margin:0 auto;padding:40px 20px}
 h1{font-size:2.5rem;margin-bottom:10px;background:linear-gradient(90deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .subtitle{color:#888;margin-bottom:40px}
-.card{background:#1a1a2e;border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid #2a2a3e}
-.card h2{margin-bottom:10px;color:#667eea}
+.card{background:#1a1a2e;border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid #2a2a3e;transition:transform .2s}
+.card:hover{transform:translateY(-3px)}
+.card h2{margin-bottom:8px;color:#667eea}
+.card .tag{display:inline-block;background:#2a2a3e;color:#aaa;font-size:.75rem;padding:4px 10px;border-radius:20px;margin-bottom:10px}
 .card p{color:#aaa;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
 .links{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
 .links a{background:#667eea;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:500;transition:transform .2s}
 .links a:hover{transform:translateY(-2px)}
@@ -22,18 +25,19 @@ h1{font-size:2.5rem;margin-bottom:10px;background:linear-gradient(90deg,#667eea,
 <body>
 <div class="container">
 <h1>RianPow Portfolio</h1>
-<p class="subtitle">Welcome to my portfolio website</p>
-<div class="card">
-<h2>About Me</h2>
-<p>Hi! I'm Rian, a passionate developer who loves building interactive websites and exploring new technologies.</p>
+<p class="subtitle">Anime, Film & Series yang saya suka</p>
+<div class="grid">
+<div class="card"><span class="tag">Anime</span><h2>Chainsaw Man</h2><p>Denji dan Pochita. Aksi brutal dengan cerita emosional yang mendalam.</p></div>
+<div class="card"><span class="tag">Series</span><h2>Arcane</h2><p>Animasi League of Legends. Visual stunning dengan cerita sisters Jinx & Vi.</p></div>
+<div class="card"><span class="tag">Film</span><h2>Spider-Man: Brand New Day</h2><p>Petualangan baru Spider-Man dengan cerita yang fresh.</p></div>
+<div class="card"><span class="tag">Anime</span><h2>Look Back</h2><p>Karya Tatsuki Fujimoto. Kisah persahabatan dan passion dalam menggambar.</p></div>
+<div class="card"><span class="tag">Series</span><h2>The Queen's Gambit</h2><p>Beth Harmon dan catur. Drama yang memukau tentang genius dan addiction.</p></div>
+<div class="card"><span class="tag">Series</span><h2>Stranger Things</h2><p>Hawkins, Upside Down, dan Eleven. Nostalgia 80s yang keren.</p></div>
+<div class="card"><span class="tag">Series</span><h2>The Mentalist</h2><p>Patrick Jane dan kemampuan observasi luar biasa. Detective series klasik.</p></div>
 </div>
-<div class="card">
-<h2>Projects</h2>
-<p>Check out my GitHub for more projects!</p>
 <div class="links">
 <a href="https://github.com/rianpowder-droid" target="_blank">GitHub</a>
 <a href="https://rianpowder-droid.github.io/RianPow-Daily/" target="_blank">RianPow Daily</a>
-</div>
 </div>
 </div>
 </body>
