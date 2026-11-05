@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog - Rian(); style (vanilla)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body { font-family:'Poppins',sans-serif; background:hsl(0,0%,7%); color:#2c3e50; min-height:100vh; text-align:center; }
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { background:hsl(240,1%,17%); border-radius:5px; }
+  ::-webkit-scrollbar-thumb { background:#ffdb70; border-radius:5px; }
+  .accent { color:#ffdb70; }
+  .card { background:#1e1e1f; border:1px solid #383838; border-radius:.75rem; }
+  .paraf { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis; }
+  .fade-zoom-up { animation: fadeZoomUp 1s ease-in-out; }
+  @keyframes fadeZoomUp { 0%{opacity:0;transform:scale(.5)} 100%{opacity:1;transform:scale(1)} }
+  .active-link::after { content:""; display:inline-block; margin-top:.08em; width:100%; height:4px; border-radius:2px; background:#ffdb70; }
+</style>
+</head>
+<body class="text-white">
+  <nav class="fixed top-0 z-[98] w-full backdrop-blur-md bg-[#121212]/80 px-5 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <button onclick="go('/')" class="text-lg text-[#ffdb70] font-semibold hover:text-amber-100">Rian();</button>
+      <button onclick="toggleMenu()" class="md:hidden text-[#ffdb70] text-xl">☰</button>
+      <ul id="mobile-menu" class="hidden md:flex gap-6 text-sm font-medium">
+        <li><a href="#" onclick="go('/');return false" class="navlink text-gray-300 hover:text-white">Home</a></li>
+        <li><a href="#" onclick="go('/about');return false" class="navlink text-gray-300 hover:text-white">About</a></li>
+        <li><a href="#" onclick="go('/portfolio');return false" class="navlink text-gray-300 hover:text-white">Portfolio</a></li>
+        <li><a href="#" onclick="go('/blog');return false" class="navlink text-gray-300 hover:text-white">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="app" class="max-w-7xl mx-auto mt-[100px] px-3 md:px-8"></main>
+
+  <footer class="md:hidden fixed bottom-0 left-0 right-0 rounded-t-3xl border border-[#383838] bg-[#121212]/80 backdrop-blur-md">
+    <nav class="flex justify-around py-4 text-xs">
+      <a href="#" onclick="go('/');return false" class="text-gray-300 hover:text-white">Home</a>
+      <a href="#" onclick="go('/about');return false" class="text-gray-300 hover:text-white">About</a>
+      <a href="#" onclick="go('/portfolio');return false" class="text-gray-300 hover:text-white">Portfolio</a>
+      <a href="#" onclick="go('/blog');return false" class="text-gray-300 hover:text-white">Blog</a>
+    </nav>
+  </footer>
+
+<script>
+  const API = 'https://64a38c9cc3b509573b564183.mockapi.io/api/blog/all';
+  const app = document.getElementById('app');
+  let articles = [];
+
+  function go(path) {
+    history.pushState({}, '', path);
+    render();
+  }
+  window.addEventListener('popstate', render);
+
+  async function fetchArticles() {
+    if (articles.length) return articles;
+    try {
+      const r = await fetch(API);
+      articles = await r.json();
+    } catch (e) { articles = []; }
+    return articles;
+  }
+
+  function esc(s){ return String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function toggleMenu(){ const m=document.getElementById('mobile-menu'); m.classList.toggle('hidden'); m.classList.toggle('flex'); m.classList.toggle('flex-col'); m.classList.toggle('absolute'); m.classList.toggle('top-14'); m.classList.toggle('right-5'); m.classList.toggle('bg-[#121212]'); m.classList.toggle('p-4'); m.classList.toggle('rounded-xl'); m.classList.toggle('border'); m.classList.toggle('border-[#383838]'); }
+
+  async function render() {
+    const path = location.pathname;
+    if (path.startsWith('/read/')) {
+      const id = path.split('/').pop();
+      await renderArticle(id);
+    } else if (path === '/blog') {
+      await renderBlog();
+    } else if (path === '/portfolio') {
+      renderPortfolio();
+    } else if (path === '/about') {
+      renderAbout();
+    } else {
+      renderHome();
+    }
+  }
+
+  function renderHome() {
+    app.innerHTML = `<div class="text-center py-20">
+      <img src="https://via.placeholder.com/160x160?text=Asa+Mitaka" alt="Asa Mitaka" class="mx-auto rounded-full w-32 h-32 md:w-40 md:h-40 object-cover border-2 border-[#ffdb70] mb-6">
+      <h1 class="text-3xl md:text-5xl font-bold text-[#ffdb70]">Hello World, I'm</h1>
+      <h2 class="text-2xl md:text-4xl font-bold mt-2">Rian (vanilla port)</h2>
+      <p class="mt-4 text-gray-400">Portfolio + Blog in pure HTML/CSS/JS</p>
+      <a href="#" onclick="go('/portfolio');return false" class="inline-block mt-6 px-5 py-2 rounded-xl bg-[#ffdb70] text-black font-semibold">Lihat Portfolio →</a>
+    </div>`;
+  }
+
+  function renderAbout() {
+    app.innerHTML = `<div class="max-w-3xl mx-auto py-10 text-left px-4">
+      <h1 class="text-3xl font-bold text-[#ffdb70] mb-4">About</h1>
+      <p class="text-gray-300 leading-relaxed">Portofolio v2 dari Bagas Rakha — diadaptasi ke HTML/CSS/JS murni. Stack asli: Vue 3 + Vue Router + Tailwind + Axios + MockAPI.</p>
+    </div>`;
+  }
+
+  function renderPortfolio() {
+    const items = [
+      {title:'Portfolio v1', img:'https://via.placeholder.com/300x200?text=Portfolio+v1'},
+      {title:'Sistekdes', img:'https://via.placeholder.com/300x200?text=Sistekdes'},
+      {title:'Bumdesma', img:'https://via.placeholder.com/300x200?text=Bumdesma'},
+    ];
+    const cards = items.map(i=>`<div class="card overflow-hidden">
+      <img src="${i.img}" class="w-full h-40 object-cover" alt="">
+      <div class="p-4 text-left"><h3 class="text-amber-200 font-semibold">${i.title}</h3></div>
+    </div>`).join('');
+    app.innerHTML = `<div class="py-6"><h1 class="text-3xl font-bold text-[#ffdb70] mb-6 text-left px-4">Portfolio</h1>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4">${cards}</div></div>`;
+  }
+
+  async function renderBlog() {
+    await fetchArticles();
+    const cards = articles.map(a => `
+      <article class="fade-zoom-up">
+        <a href="#" onclick="go('/read/${esc(a.slug)}/${esc(a.id)}');return false"
+           class="flex w-full card text-left text-white p-5 md:py-7 md:px-8 cursor-pointer hover:bg-[#282828] items-center gap-4">
+          <div class="w-full pr-4">
+            <div class="text-xs mb-1 text-slate-400 flex items-center italic">
+              <span class="h-[1px] w-5 bg-amber-200 mr-2 inline-block"></span>${esc(a.date)}
+            </div>
+            <h1 class="text-sm md:text-md text-amber-200 font-bold mb-2">${esc(a.title)}</h1>
+            <div class="text-sm hidden md:block paraf text-gray-300">${esc(a.desc)}</div>
+          </div>
+          <div class="w-20 h-20 md:w-28 md:h-28 flex items-center">
+            <img src="${esc(a.image)}" class="rounded-lg md:rounded-xl w-full h-full object-cover" alt="">
+          </div>
+        </a>
+      </article>`).join('');
+    app.innerHTML = `
+      <div class="flex flex-col-reverse md:flex-row relative">
+        <div class="w-full md:w-2/3">
+          <div class="flex flex-col gap-4 md:px-20 fade-zoom-up">${cards || '<p class="text-gray-400">Tidak ada artikel.</p>'}</div>
+        </div>
+        <div class="w-full md:w-1/3 h-fit p-8 md:sticky md:top-24">
+          <div class="text-left">
+            <div class="bg-clip-text text-transparent bg-gradient-to-r from-slate-100 to-amber-300">Let's share experiences, stories, and knowledge together.</div>
+            <div class="h-[1px] mt-7 mb-7 w-20 bg-amber-200"></div>
+            <div class="hidden md:block">
+              <div class="text-white text-md font-semibold">Topics</div>
+              <div class="mt-3 flex flex-wrap gap-1">
+                <span class="py-2 px-3 rounded-2xl bg-[#1e1e1f] hover:bg-white/20 text-white text-xs cursor-pointer">NodeJS</span>
+                <span class="py-2 px-3 rounded-2xl bg-[#1e1e1f] hover:bg-white/20 text-white text-xs cursor-pointer">Technology</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function renderArticle(id) {
+    let a = articles.find(x=>String(x.id)===String(id));
+    if (!a) { await fetchArticles(); a = articles.find(x=>String(x.id)===String(id)); }
+    if (!a) { app.innerHTML = '<p class="py-20 text-gray-400">Artikel tidak ditemukan.</p>'; return; }
+    app.innerHTML = `
+      <div class="w-full md:w-3/5 mx-auto md:mt-5">
+        <div class="bg-white rounded-xl mx-3 p-5 md:p-10 md:mx-0 text-black">
+          <h1 class="text-xl md:text-4xl font-bold leading-relaxed text-left">${esc(a.title)}</h1>
+          <div class="mt-3 text-left text-gray-800 text-sm">Published at <span>${esc(a.date)}</span></div>
+          <div class="h-[2px] w-20 my-5 md:my-10 bg-[#ffdb70] md:w-1/3"></div>
+          <div class="relative w-full" style="padding-top:50%">
+            <img src="${esc(a.image)}" class="absolute top-0 left-0 rounded-lg w-full h-full object-cover" alt="Thumbnail">
+          </div>
+          <div class="text-left mt-8">${a.content}</div>
+        </div>
+      </div>`;
+  }
+
+  render();
+</script>
+</body>
+</html>
